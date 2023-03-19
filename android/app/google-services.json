@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "506447570412",
+    "project_id": "campusreads-de665",
+    "storage_bucket": "campusreads-de665.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506447570412:android:43e21191a43ed07921ccc9",
+        "android_client_info": {
+          "package_name": "com.example.campusreads"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506447570412-l8engdpfbpu4umrur607j41bhdteuhgo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.campusreads",
+            "certificate_hash": "ebc9bf6c287c4eed9d073e37954cd0c882306456"
+          }
+        },
+        {
+          "client_id": "506447570412-57b6get0hvvktrk48h15gnl8c70roq6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzlcHPJdYZcc6AStznP3MoZ_78EEI7ZGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "506447570412-57b6get0hvvktrk48h15gnl8c70roq6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
