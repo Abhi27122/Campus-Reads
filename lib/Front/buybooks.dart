@@ -1,50 +1,85 @@
 import 'package:campusreads/Front/chatscreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 class BuyThis extends StatelessWidget{
-  BuyThis(this.user_name,this.contact_info,this.ImageWidget);
-  
-  String user_name;
-  String contact_info;
-  Image ImageWidget;
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  BuyThis(this.user_id,this.info,this.img);
+
+  String? user_id;
+  Image? img;
+  String? info;
+
+
+  Widget getWidget(BuildContext context) {
+    CollectionReference userInfo = FirebaseFirestore.instance.collection('personal_info');
+
+    return FutureBuilder<DocumentSnapshot>(
+      //Fetching data from the user_id specified of the user
+      future: userInfo.doc(user_id).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        //Error Handling conditions
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Center(child:Text("Something went wrong please reopen app",style: TextStyle(fontSize: 20),));
+        }
+
+        //Data is output to the user
+        //Text("Full Name: ${data['full_name']} ${data['last_name']}");
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          return Container(
+        //elevation: 20,
+        color: Color.fromARGB(255, 218, 197, 190),
+        child: ListView(
+          children: [
+            Container(
+              height: 50,
+              child: ListTile(
+                leading: Icon(Icons.person_add),
+                title:  Text(data['Name'],style: TextStyle(fontSize: 20),),
+              )
+            ),
+            Container(
+              height: 50,
+              child: ListTile(
+                leading: Icon(Icons.info),
+                title:  Text(info!,style: TextStyle(fontSize: 20),),
+              )
+            ),
+            Container(
+              height: 50,
+              child: ListTile(
+                leading: Icon(Icons.phone),
+                title:  SelectableText(data['Contact'],style: TextStyle(fontSize: 20),),
+              )
+            ),
+            Container(
+              padding: EdgeInsets.all(20),
+              child: img,
+            ),
+            
+          ],
+        ));
+        }
+        return  Center(child:CircularProgressIndicator());
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title:Text("Buy this books")),
-      body: Container(
-        constraints: BoxConstraints.loose(Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height*(0.6))),
-        child: Card(
-          elevation: 20,
-          color: Color.fromARGB(255, 218, 197, 190),
-          child: ListView(
-            children: [
-              Container(
-                height: 50,
-                child: ListTile(
-                  leading: Icon(Icons.person_add),
-                  title:  Text(user_name,style: TextStyle(fontSize: 20),),
-                )
-              ),
-              Container(
-                height: 50,
-                child: ListTile(
-                  leading: Icon(Icons.phone),
-                  title:  SelectableText(contact_info,style: TextStyle(fontSize: 20),),
-                )
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height*(0.43),
-                child: ImageWidget,
-              ),
-              
-            ],
-          ),
-        ),
-      ),
+      body: getWidget(context),
       floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ChatScreen())));
+        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ChatScreen(user_id))));
       },child: Icon(Icons.chat),),
     );  
   }

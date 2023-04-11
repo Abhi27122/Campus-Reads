@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:async';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  ChatScreen(this.user_id);
 
+  String? user_id;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -13,13 +15,51 @@ class _ChatScreenState extends State<ChatScreen> {
 
   final TextEditingController _controller = TextEditingController();
 
-  StreamSubscription? _subscription;
-  bool _isTyping = false;
+    Widget getWidget(BuildContext context) {
+    CollectionReference userInfo = FirebaseFirestore.instance.collection('personal_info');
+
+    return FutureBuilder<DocumentSnapshot>(
+      //Fetching data from the user_id specified of the user
+      future: userInfo.doc(widget.user_id).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        //Error Handling conditions
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Center(child:Text("Something went wrong please reopen app",style: TextStyle(fontSize: 20),));
+        }
+
+        //Data is output to the user
+        //Text("Full Name: ${data['full_name']} ${data['last_name']}");
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          return Container(
+        //elevation: 20,
+        color: Color.fromARGB(255, 218, 197, 190),
+        child: ListView(
+          children: [
+            Container(
+              height: 50,
+              child: ListTile(
+                leading: Icon(Icons.person_add),
+                title:  Text(data['Name'],style: TextStyle(fontSize: 20),),
+              )
+            ),
+          ],
+        ));
+        }
+        return  Center(child:CircularProgressIndicator());
+      },
+    );
+  }
+
 
 
   @override
   void dispose(){
-    _subscription?.cancel();
     super.dispose();
   }
 
@@ -52,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Name'),
+        title: getWidget(context),
       ),
       body: SafeArea(
         child: Column(
