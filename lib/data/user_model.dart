@@ -1,19 +1,20 @@
 class UserModel{
   String? id;
-  String name;
-  String email;
-  String phone;
-  String password;
+  String? name;
+  String? email;
+  String? phone;
+  String? photourl;
 
-  UserModel(this.id,this.name,this.email,this.phone,this.password);
+  UserModel(this.id,this.name,this.email,this.phone,this.photourl);
 
 
-  toJson(){
+  Map<String,dynamic> toJson(){
     return{
       "Full Name": name,
       "Email": email,
       "phone":phone,
-      "password":password
+      "uid":id,
+      "photo":photourl
     };
   }
 }

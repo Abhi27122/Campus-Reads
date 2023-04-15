@@ -1,44 +1,62 @@
 import 'package:campusreads/data/selling_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import '../data/google_sign_in.dart';
+
+
 
 class MyPosts extends StatelessWidget {
   MyPosts({Key? key}) : super(key: key);
-
-  List<Selling_data> ls = [
-    Selling_data("EnTC Third Year Sem 2", 500, DateTime.now()),
-    Selling_data("EnTC Third Year Sem 2", 500, DateTime.now()),
-    Selling_data("EnTC Third Year Sem 2", 500, DateTime.now()),
-  ];
+  final CollectionReference _products = FirebaseFirestore.instance.collection('products'); 
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 227, 218, 167),
-      appBar: AppBar(title: Text("My Posts"), backgroundColor: Color.fromARGB(255, 146, 81, 16),),
-      body:ListView.builder(
-        itemCount: ls.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              //set border radius more than 50% of height and width to make circle
-              ),
-              color: const Color.fromARGB(255, 244, 176, 113),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text(ls[index].title),
-                    subtitle: Text('${ls[index].dt.day}/${ls[index].dt.month}/${ls[index].dt.year}'),
-                    trailing: Text( '₹${ls[index].price}'),
-                    onTap: (){
-                  },
-                ),
-              ],
-            ),
-          );
-        },
+      appBar: AppBar(title: Text("Your Posts"), backgroundColor: Color.fromARGB(255, 146, 81, 16),
       ),
+      body: StreamBuilder(
+        stream: _products.where("userId", isEqualTo:  user!.uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> streamSnapshot) { 
+          if(streamSnapshot.hasData){
+            return ListView.builder(
+                      itemCount: streamSnapshot.data!.docs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                         final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+                      return Padding(
+                            padding: EdgeInsets.all(5),
+                            child: GestureDetector(
+                                child: Card(
+                                shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                //set border radius more than 50% of height and width to make circle
+                                ),
+                                color: const Color.fromARGB(255, 244, 176, 113),
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      leading: IconButton(onPressed: () async{
+                                        await _products.doc(documentSnapshot.id).delete();
+                                      }, icon: Icon(Icons.delete)),
+                                      title: Text(documentSnapshot['Name'],style: TextStyle(fontSize: 20),),
+                                      subtitle: Text(timeago.format(documentSnapshot['Date'].toDate()),style:TextStyle(fontSize: 15)),
+                                      trailing: Text( '₹${documentSnapshot['price']}',style:TextStyle(fontSize: 20)),
+                                          ),
+                                        ],
+                                      ),  
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+          }
+          else{
+            return Center(child:CircularProgressIndicator());
+          }
+         },),
     );
   }
 }

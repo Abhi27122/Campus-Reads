@@ -1,5 +1,6 @@
 import 'package:campusreads/Drawer/myposts.dart';
 import 'package:campusreads/Drawer/myprofile.dart';
+import 'package:campusreads/Front/addpost.dart';
 import 'package:campusreads/Front/buybooks.dart';
 import 'package:campusreads/data/google_sign_in.dart';
 import 'package:campusreads/data/selling_data.dart';
@@ -13,8 +14,6 @@ class FrontPage extends StatelessWidget {
   FrontPage();
 
   final CollectionReference _products = FirebaseFirestore.instance.collection('products'); 
-
-  Profile_data pd = AuthService().getdata();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +80,13 @@ class FrontPage extends StatelessWidget {
                             );
           }
           return Center(child:CircularProgressIndicator());
-         },)
+         },),
+         floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: ((context) =>  AddPost())));
+          },
+          child: Icon(Icons.add),
+        ),
     );
   }
 }
@@ -95,12 +100,18 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-
-  Profile_data pd = AuthService().getdata();
-
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+  return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('personal_info').doc(user!.uid).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text("Loading");
+        }
+        print(user!.uid);
+        var userDocument = snapshot.data as DocumentSnapshot;
+        return  Drawer(
         backgroundColor: Color.fromARGB(255, 227, 218, 167),
         child: ListView(
           padding:  EdgeInsets.all(0),
@@ -112,15 +123,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               child: UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color:Color.fromARGB(255, 146, 81, 16)),
                 accountName: Text(
-                  pd.name!,
+                  userDocument['Full Name'],
                   style: TextStyle(fontSize: 18),
                 ),
-                accountEmail: Text(pd.email!),
+                accountEmail: Text(userDocument['Email']),
                 currentAccountPictureSize: Size.square(50),
                 currentAccountPicture: CircleAvatar(
                   radius: 30,
                   backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(pd.photourl!),//Text
+                  backgroundImage: NetworkImage(userDocument["photo"]),//Text
                 ), //circleAvatar
               ), //UserAccountDrawerHeader
             ), //DrawerHeader
@@ -138,6 +149,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Navigator.of(context).push(MaterialPageRoute(builder: ((context) => MyPosts())));
               },
             ),
+            
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Logout'),
@@ -148,5 +160,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ],
         ),
       );
-  }
+      }
+  );
 }
+}
+
+
+

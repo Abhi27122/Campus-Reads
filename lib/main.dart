@@ -1,4 +1,6 @@
 import 'package:campusreads/data/google_sign_in.dart';
+import 'package:campusreads/data/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,7 +69,6 @@ class Login extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                         child: TextField(
                           controller: contact_info,
-                          obscureText: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(90.0),
@@ -88,17 +89,25 @@ class Login extends StatelessWidget {
                             ),
                             child: const Text('Sign Up with google'),
                             onPressed: () async{
-                              if()
-                              AuthService().signInWithGoogle();
-                              final FirebaseAuth auth = FirebaseAuth.instance;
-                              final User? user = auth.currentUser;
+                              if(name.text != "" && contact_info.text != ""){
+                                  await AuthService().signInWithGoogle();
+                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                  final User? user = auth.currentUser;
+                                  
+                                  UserModel us =  UserModel(user?.uid, name.text , user?.email, contact_info.text,user?.photoURL);
+                                  Map<String, dynamic> userdata = us.toJson();
+                              
+                                  CollectionReference collref = FirebaseFirestore.instance.collection("personal_info");
+
+                                  await collref.doc(user!.uid).set(userdata);
+                              }
                             },
                           )),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async{
                               AuthService().signInWithGoogle();
                               final FirebaseAuth auth = FirebaseAuth.instance;
-                              final User? user = auth.currentUser;
+                              final User? user = auth.currentUser; 
                         },
                         child: Text(
                           'Exisiting User ?',

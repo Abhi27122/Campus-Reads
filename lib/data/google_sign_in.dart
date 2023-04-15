@@ -1,6 +1,7 @@
 import 'package:campusreads/Front/frontpage.dart';
 import 'package:campusreads/data/selling_data.dart';
 import 'package:campusreads/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,16 +21,14 @@ class AuthService{
         });
   }
 
-  Profile_data getdata() {
+
+  updateurl(String url) async{
     User? user = FirebaseAuth.instance.currentUser;
-    final String? name = user?.displayName;
-    final String? email = user?.email;
-    final String? photo = user?.photoURL;
-
-    Profile_data pd = Profile_data(name, email, photo);
-
-    return pd;
+    var collection = FirebaseFirestore.instance.collection('personal_info');
+    await collection.doc(user!.uid).update({'photo' : url}).then((_) => print('Success')).catchError((error) => print('Failed: $error'));
   }
+
+  
 
   signInWithGoogle() async {
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -41,6 +40,7 @@ class AuthService{
     );
 
     UserCredential user =await FirebaseAuth.instance.signInWithCredential(credential);
+    print(googleUser!.id);
   }
 
    //Sign out

@@ -43,7 +43,7 @@ class BuyThis extends StatelessWidget{
               height: 50,
               child: ListTile(
                 leading: Icon(Icons.person_add),
-                title:  Text(data['Name'],style: TextStyle(fontSize: 20),),
+                title:  Text(data['Full Name'],style: TextStyle(fontSize: 20),),
               )
             ),
             Container(
@@ -57,7 +57,7 @@ class BuyThis extends StatelessWidget{
               height: 50,
               child: ListTile(
                 leading: Icon(Icons.phone),
-                title:  SelectableText(data['Contact'],style: TextStyle(fontSize: 20),),
+                title:  SelectableText(data['phone'],style: TextStyle(fontSize: 20),),
               )
             ),
             Container(
@@ -78,10 +78,7 @@ class BuyThis extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(title:Text("Buy this books")),
       body: getWidget(context),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ChatScreen(user_id))));
-      },child: Icon(Icons.chat),),
-    );  
+      );  
   }
 }
 
