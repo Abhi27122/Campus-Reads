@@ -1,6 +1,7 @@
 import 'package:campusreads/Front/chatscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BuyThis extends StatelessWidget{
 
@@ -64,6 +65,21 @@ class BuyThis extends StatelessWidget{
               padding: EdgeInsets.all(20),
               child: img,
             ),
+
+            Container(
+              alignment: Alignment.bottomRight,
+              padding: EdgeInsets.all(10),
+              child: FloatingActionButton(
+                child: Icon(Icons.chat),
+                onPressed: (){
+                  var whatsappUrl ="whatsapp://send?phone=${"+91" + data['phone']}" +"&text=${Uri.encodeComponent("Hi")}";
+                  try {
+                        launch(whatsappUrl);
+                      } catch (e) {
+                        //To handle error and display error message
+                      }
+              }),
+            )
             
           ],
         ));
@@ -78,7 +94,7 @@ class BuyThis extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(title:Text("Buy this books")),
       body: getWidget(context),
-      );  
+      ); 
   }
 }
 
