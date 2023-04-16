@@ -24,7 +24,7 @@ class _MyProfileState extends State<MyProfile> {
   final ImagePicker _picker = ImagePicker();
 
   Future imgFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 50);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery,imageQuality:30);
 
     setState(() async {
       if (pickedFile != null) {
@@ -94,7 +94,10 @@ class _MyProfileState extends State<MyProfile> {
           child:   CircleAvatar(
                 radius: 80,
                 backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(pd['photo']), //Text
+                backgroundImage: 
+                NetworkImage(pd['photo'])
+                
+                , //Text
                 child: GestureDetector(onTap: () {
                    imgFromGallery();
                 } ),

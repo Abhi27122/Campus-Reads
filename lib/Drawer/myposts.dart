@@ -1,6 +1,7 @@
 import 'package:campusreads/data/selling_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../data/google_sign_in.dart';
@@ -10,6 +11,8 @@ import '../data/google_sign_in.dart';
 class MyPosts extends StatelessWidget {
   MyPosts({Key? key}) : super(key: key);
   final CollectionReference _products = FirebaseFirestore.instance.collection('products'); 
+  final desertRef = FirebaseStorage.instance;
+
   User? user = FirebaseAuth.instance.currentUser;
 
   @override
@@ -39,6 +42,7 @@ class MyPosts extends StatelessWidget {
                                   children: [
                                     ListTile(
                                       leading: IconButton(onPressed: () async{
+                                        await desertRef.refFromURL(documentSnapshot['image']).delete();
                                         await _products.doc(documentSnapshot.id).delete();
                                       }, icon: Icon(Icons.delete)),
                                       title: Text(documentSnapshot['Name'],style: TextStyle(fontSize: 20),),

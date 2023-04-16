@@ -28,8 +28,7 @@ class AuthService{
     await collection.doc(user!.uid).update({'photo' : url}).then((_) => print('Success')).catchError((error) => print('Failed: $error'));
   }
 
-  
-
+ 
   signInWithGoogle() async {
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     GoogleSignInAuthentication? _auth = await googleUser?.authentication;

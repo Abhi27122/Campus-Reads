@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 class FrontPage extends StatelessWidget {
@@ -26,7 +27,7 @@ class FrontPage extends StatelessWidget {
       ),
       drawer: DrawerWidget(),
       body: StreamBuilder(
-        stream: _products.orderBy('Date').snapshots(),
+        stream: _products.orderBy('Date',descending: true).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> streamSnapshot) { 
           if(streamSnapshot.hasData){
             return ListView.builder(
@@ -46,21 +47,13 @@ class FrontPage extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Container(
+                                      key: Key("1234"),
                                       padding: EdgeInsets.all(20),
-                                      child: Image.network(
-                                            documentSnapshot['image'],
-                                            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                                            return child;
-                                            },
-                                            loadingBuilder: (context, child, loadingProgress) {
-                                            if (loadingProgress == null) {
-                                            return child;
-                                            } else {
-                                            return Center(
-                                            child: CircularProgressIndicator(),
-                                            );
-                                            }}
-                                    )),
+                                      child: CachedNetworkImage(
+                                              imageUrl: documentSnapshot['image'],
+                                              placeholder: (context, url) => CircularProgressIndicator(),
+                                              errorWidget: (context, url, error) => Icon(Icons.error),
+                                          ),),
                                     ListTile(
                                       title: Text(documentSnapshot['Name'],style: TextStyle(fontSize: 20),),
                                       subtitle: Text(timeago.format(documentSnapshot['Date'].toDate()),style:TextStyle(fontSize: 15)),
@@ -72,7 +65,7 @@ class FrontPage extends StatelessWidget {
                                       
                                     ),
                                     onTap: (){
-                                        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => BuyThis(documentSnapshot['userId'],documentSnapshot['Name'],Image.network(documentSnapshot['image'],fit: BoxFit.contain,)))));
+                                        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => BuyThis(documentSnapshot['userId'],documentSnapshot['Name'],documentSnapshot['image']))));
                                       },
                                   ),
                                 );

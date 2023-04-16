@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campusreads/Front/chatscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,10 @@ class BuyThis extends StatelessWidget{
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  BuyThis(this.user_id,this.info,this.img);
+  BuyThis(this.user_id,this.info,this.imgurl);
 
   String? user_id;
-  Image? img;
+  String? imgurl;
   String? info;
 
 
@@ -63,7 +64,11 @@ class BuyThis extends StatelessWidget{
             ),
             Container(
               padding: EdgeInsets.all(20),
-              child: img,
+              child: CachedNetworkImage(
+                    imageUrl: imgurl!,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
             ),
 
             Container(
