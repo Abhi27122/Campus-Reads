@@ -1,16 +1,11 @@
-# campusreads
 
-A new Flutter project.
+# Campus Reads
 
-## Getting Started
+This Android application is for students of same campus to exchange books easily.
 
-This project is a starting point for a Flutter application.
+It uses Firebase for authentication and Firebase Storage for storing files/data.
 
-A few resources to get you started if this is your first Flutter project:
+Users can see all the books enlisted on the app also can upload the books they want to sell with price and Image of book/books.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
