@@ -39,55 +39,71 @@ class BuyThis extends StatelessWidget{
           return Container(
         //elevation: 20,
         color: Color.fromARGB(255, 218, 197, 190),
-        child: ListView(
-          children: [
-            Container(
-              height: 50,
-              child: ListTile(
-                leading: Icon(Icons.person_add),
-                title:  Text(data['Full Name'],style: TextStyle(fontSize: 20),),
-              )
-            ),
-            Container(
-              height: 50,
-              child: ListTile(
-                leading: Icon(Icons.info),
-                title:  Text(info!,style: TextStyle(fontSize: 20),),
-              )
-            ),
-            Container(
-              height: 50,
-              child: ListTile(
-                leading: Icon(Icons.phone),
-                title:  SelectableText(data['phone'],style: TextStyle(fontSize: 20),),
-              )
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: CachedNetworkImage(
-                    imageUrl: imgurl!,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+        child: Center(
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top:10),
+                  child: Align(
+                    alignment: Alignment.center,
+                    //padding: EdgeInsets.only(top: 10),
+                      child:  CircleAvatar(
+                        radius: 70,
+                        backgroundColor: Colors.white,
+                        backgroundImage: 
+                        NetworkImage(data['photo']),
+                      ),
                   ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 30,right: 10),
+                  child: ListTile(
+                    leading: Icon(Icons.person_add),
+                    title:  Text(data['Full Name'],style: TextStyle(fontSize: 20),),
+                  )
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 30,right: 10),
+                  child: ListTile(
+                    leading: Icon(Icons.info),
+                    title:  Text(info!,style: TextStyle(fontSize: 20),),
+                  )
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 30,right: 10),
+                  child: ListTile(
+                    leading: Icon(Icons.phone),
+                    title:  SelectableText(data['phone'],style: TextStyle(fontSize: 20),),
+                  )
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: CachedNetworkImage(
+                        imageUrl: imgurl!,
+                        placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                ),
+                  
+                Container(
+                  alignment: Alignment.bottomRight,
+                  padding: EdgeInsets.all(10),
+                  child: FloatingActionButton(
+                    child: Icon(Icons.chat),
+                    onPressed: (){
+                      var whatsappUrl ="whatsapp://send?phone=${"+91" + data['phone']}" +"&text=${Uri.encodeComponent("Hey saw your product on Campus Reads - ${info} and I am interested in buying")}";
+                      try {
+                            launch(whatsappUrl);
+                          } catch (e) {
+                            //To handle error and display error message
+                          }
+                  }),
+                )
+                
+              ],
             ),
-
-            Container(
-              alignment: Alignment.bottomRight,
-              padding: EdgeInsets.all(10),
-              child: FloatingActionButton(
-                child: Icon(Icons.chat),
-                onPressed: (){
-                  var whatsappUrl ="whatsapp://send?phone=${"+91" + data['phone']}" +"&text=${Uri.encodeComponent("Hi")}";
-                  try {
-                        launch(whatsappUrl);
-                      } catch (e) {
-                        //To handle error and display error message
-                      }
-              }),
-            )
-            
-          ],
-        ));
+          ),
+        );
         }
         return  Center(child:CircularProgressIndicator());
       },

@@ -42,8 +42,15 @@ class MyPosts extends StatelessWidget {
                                   children: [
                                     ListTile(
                                       leading: IconButton(onPressed: () async{
-                                        await desertRef.refFromURL(documentSnapshot['image']).delete();
-                                        await _products.doc(documentSnapshot.id).delete();
+                                        showDialog(context: context, builder: (ctx)=> AlertDialog(
+                                          title: Text("Are you sure you want to delete this items"),
+                                          content: ElevatedButton(onPressed: () async{
+                                              await desertRef.refFromURL(documentSnapshot['image']).delete();
+                                              await _products.doc(documentSnapshot.id).delete();
+                                              Navigator.pop(context);
+                                          }, 
+                                          child: Text("Confirm!")),
+                                        ));
                                       }, icon: Icon(Icons.delete)),
                                       title: Text(documentSnapshot['Name'],style: TextStyle(fontSize: 20),),
                                       subtitle: Text(timeago.format(documentSnapshot['Date'].toDate()),style:TextStyle(fontSize: 15)),

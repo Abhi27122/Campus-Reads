@@ -1,5 +1,6 @@
 import 'package:campusreads/Drawer/myposts.dart';
 import 'package:campusreads/Drawer/myprofile.dart';
+import 'package:campusreads/Drawer/setting.dart';
 import 'package:campusreads/Front/addpost.dart';
 import 'package:campusreads/Front/buybooks.dart';
 import 'package:campusreads/data/google_sign_in.dart';
@@ -121,10 +122,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
                 accountEmail: Text(userDocument['Email']),
                 currentAccountPictureSize: Size.square(50),
-                currentAccountPicture: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(userDocument["photo"]),//Text
+                currentAccountPicture: GestureDetector(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: ((context) => MyProfile()))),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    backgroundImage: NetworkImage(userDocument["photo"]),//Text
+                  ),
                 ), //circleAvatar
               ), //UserAccountDrawerHeader
             ), //DrawerHeader
@@ -142,12 +146,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Navigator.of(context).push(MaterialPageRoute(builder: ((context) => MyPosts())));
               },
             ),
+
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Account Setting'),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: ((context) => UserSetting())));
+              },
+            ),
             
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Logout'),
               onTap: () {
-                Navigator.popUntil(context, (route) => route.isFirst);
+                AuthService().signOut();
               },
             ),
           ],

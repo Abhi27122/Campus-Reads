@@ -53,7 +53,7 @@ class _MyProfileState extends State<MyProfile> {
   Future<String> uploadFile() async {
     if (_photo == null) return "NULL";
     final fileName = basename(_photo!.path);
-    final destination = 'files/$fileName';
+    final destination = '${user!.uid}/$fileName';
 
     try {
       final ref = firebase_storage.FirebaseStorage.instance
@@ -86,22 +86,30 @@ class _MyProfileState extends State<MyProfile> {
           decoration: BoxDecoration(color: Colors.brown[100]),
           child: Column(
             children: [
-              SizedBox(
-            height: MediaQuery.of(context).size.height*(0.03),
+         Container(
+          padding:  EdgeInsets.only(top: 20),
+          child:   Stack(
+            children: [
+              CircleAvatar(
+                    radius: 70,
+                    backgroundColor: Colors.white,
+                    backgroundImage: 
+                    NetworkImage(pd['photo']),
+                  ),
+                  Positioned(
+              bottom: 0,
+              right: -25,
+              child: RawMaterialButton(
+                onPressed: () async{
+                  await imgFromGallery();
+                },
+                elevation: 2.0,
+                fillColor: Color(0xFFF5F6F9),
+                child: Icon(Icons.camera_alt_outlined, color: Colors.blue,),
+                shape: CircleBorder(),
+              )),
+            ],
           ),
-         Padding(
-          padding:  EdgeInsets.all(10),
-          child:   CircleAvatar(
-                radius: 80,
-                backgroundColor: Colors.white,
-                backgroundImage: 
-                NetworkImage(pd['photo'])
-                
-                , //Text
-                child: GestureDetector(onTap: () {
-                   imgFromGallery();
-                } ),
-              ),
         ),
 
         Container(
@@ -129,7 +137,7 @@ class _MyProfileState extends State<MyProfile> {
           padding: EdgeInsets.symmetric(),
           child:Text(pd['Email'],style: TextStyle(fontSize: 20,color: Colors.brown)),
           ),
-       ],
+          ],
           ),
         ),
       ]),

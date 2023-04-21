@@ -31,20 +31,27 @@ class _AddPostState extends State<AddPost> {
   String url ="";
 
   Future imgFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 50);
-
-    setState(() async {
+    try{
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 50);
+      setState(() async {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
         url = await uploadFile();
       } else {
         print('No image selected.');
       }
-    });
+     });
+    }
+    catch(e){
+      return;
+    }
+
+    
   }
 
    Future<String> uploadFile() async {
     if (_photo == null) return "NULL";
+
     final fileName = basename(_photo!.path);
     final destination = 'posts/$fileName';
 
@@ -120,8 +127,8 @@ class _AddPostState extends State<AddPost> {
                           minimumSize: Size(100, 40),
                           fixedSize: const Size.fromWidth(20)
                           ),
-                      onPressed: () {
-                        imgFromGallery();
+                      onPressed: () async{
+                        await imgFromGallery();
                       },
                       child: const Text("Add Image"),
                     ),
@@ -136,7 +143,7 @@ class _AddPostState extends State<AddPost> {
                           ),
                       onPressed: () async{
                         // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState!.validate() && _photo != null && url != "") {
+                        if (_formKey.currentState!.validate() && url != "") {
                           Selling_data us =  Selling_data(name.text, price.text, DateTime.now(), user!.uid,url);
                           Map<String, dynamic> posts = us.toJson();
                           CollectionReference collref = FirebaseFirestore.instance.collection("products");
