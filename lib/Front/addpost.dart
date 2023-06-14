@@ -30,6 +30,7 @@ class _AddPostState extends State<AddPost> {
   final ImagePicker _picker = ImagePicker();
   String url ="";
 
+
   Future imgFromGallery() async {
     try{
       final pickedFile = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 50);
@@ -45,8 +46,23 @@ class _AddPostState extends State<AddPost> {
     catch(e){
       return;
     }
+  }
 
-    
+  Future imgFromCamera() async {
+    try{
+      final pickedFile = await _picker.pickImage(source: ImageSource.camera,imageQuality: 50);
+      setState(() async {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        url = await uploadFile();
+      } else {
+        print('No image selected.');
+      }
+     });
+    }
+    catch(e){
+      return;
+    }
   }
 
    Future<String> uploadFile() async {
@@ -67,6 +83,48 @@ class _AddPostState extends State<AddPost> {
       return "Error";
     }
   }
+
+
+
+  Future showAlertDialog(BuildContext context) async{
+
+  // set up the buttons
+  Widget GalleryButton = TextButton(
+    child: Text("pick image from gallery"),
+    onPressed:  () async {
+      await imgFromGallery();
+    },
+  );
+  Widget ImageButton = TextButton(
+    child: Text("pick image from camera"),
+    onPressed:  () async {
+      await imgFromCamera();
+    },
+  );
+  Widget Done = TextButton(
+    child: Text("Done"),
+    onPressed:  () async {
+      Navigator.of(context).pop();
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Select image"),
+    actions: [
+      GalleryButton,
+      ImageButton,
+      Done
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +162,7 @@ class _AddPostState extends State<AddPost> {
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
                       controller: price,
+                      keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                           labelText: 'Price',
                           enabledBorder: OutlineInputBorder(
@@ -128,7 +187,8 @@ class _AddPostState extends State<AddPost> {
                           fixedSize: const Size.fromWidth(20)
                           ),
                       onPressed: () async{
-                        await imgFromGallery();
+                        await showAlertDialog(context);
+                        
                       },
                       child: const Text("Add Image"),
                     ),

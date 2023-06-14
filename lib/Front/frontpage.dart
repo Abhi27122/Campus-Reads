@@ -101,7 +101,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       stream: FirebaseFirestore.instance.collection('personal_info').doc(user!.uid).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Text("Loading");
+          return Center(child:CircularProgressIndicator());
+          
         }
         print(user!.uid);
         var userDocument = snapshot.data as DocumentSnapshot;
@@ -151,7 +152,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               leading: const Icon(Icons.settings),
               title: const Text('Account Setting'),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: ((context) => UserSetting())));
+                Navigator.of(context).push(MaterialPageRoute(builder: ((context) => EditUser())));
               },
             ),
             

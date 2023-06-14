@@ -17,6 +17,11 @@ class AddUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
+    //  //height: 756.0 width: 360.0
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 227, 218, 167),
       body: SingleChildScrollView(
@@ -30,11 +35,11 @@ class AddUser extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            padding: const EdgeInsets.fromLTRB(20, 100, 20, 70),
+                            padding: EdgeInsets.fromLTRB(width*0.055, height*0.1322, width*0.055, height*0.09259),
                             child: Text("Looks Like you are New User!",style: TextStyle(fontSize: 40,color: Colors.grey),)
                           ),
                           Container(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            padding: EdgeInsets.fromLTRB(width*0.05, height*0.0264, width*0.05, 0),
                             child: TextFormField(
                               controller: name,
                               decoration: InputDecoration(
@@ -52,7 +57,7 @@ class AddUser extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            padding: EdgeInsets.fromLTRB(width*0.05, height*0.0264, width*0.05, 0),
                             child: TextFormField(
                               controller: contact_info,
                               decoration: InputDecoration(
@@ -70,7 +75,7 @@ class AddUser extends StatelessWidget {
                           ),
                           Container(
                               height: 80,
-                              padding: const EdgeInsets.all(20),
+                              padding: EdgeInsets.fromLTRB(width*0.05, height*0.0264, width*0.05, height*0.0264),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(

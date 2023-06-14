@@ -17,4 +17,14 @@ class UserModel{
       "photo":photourl
     };
   }
+
+  Map<String,dynamic> toJson2(){
+    return{
+      "Full Name": name,
+      "Email": email,
+      "phone":phone,
+      "uid":id,
+      "photo":photourl
+    };
+  }
 }

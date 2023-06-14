@@ -13,15 +13,11 @@ void main() async{
   runApp(const MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
    const MyApp({Key? key}) : super(key: key);
-
-  
-
   @override
   Widget build(BuildContext context) {
+    //height: 756.0 width: 360.0
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -40,9 +36,15 @@ class Login extends StatelessWidget {
   TextEditingController name = new TextEditingController();
   TextEditingController contact_info = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
+  
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
+    //height: 756.0 width: 360.0
+  
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 227, 218, 167),
       body: SingleChildScrollView(
@@ -56,7 +58,7 @@ class Login extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            padding: const EdgeInsets.fromLTRB(20, 100, 20, 70),
+                            padding: EdgeInsets.fromLTRB(width*0.05, height*0.1322, width*0.05, height*0.0925),
                             child: Icon(
                               Icons.person,
                               color: Colors.black54,
@@ -64,7 +66,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            padding: EdgeInsets.fromLTRB(width*0.05, height*0.0264, width*0.05, 0),
                             child: TextFormField(
                               controller: name,
                               decoration: InputDecoration(
@@ -82,7 +84,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            padding: EdgeInsets.fromLTRB(width*0.05, height*0.0264, width*0.05, 0),
                             child: TextFormField(
                               controller: contact_info,
                               decoration: InputDecoration(
@@ -99,14 +101,14 @@ class Login extends StatelessWidget {
                             ),
                           ),
                           Container(
-                              height: 80,
-                              padding: const EdgeInsets.all(20),
+                              height: height*0.10582,
+                              padding:  EdgeInsets.fromLTRB(width*0.05, height*0.0264, width*0.05, height*0.0264),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(90.0)
                                   ),
-                                  minimumSize: const Size.fromHeight(50),
+                                  minimumSize:  Size.fromHeight(height*0.06613),
                                 ),
                                 child: const Text('Sign Up with google'),
                                 onPressed: () async{
