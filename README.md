@@ -12,9 +12,5 @@ Overall, the Android app for buying and selling books inside a college is an eff
 
 <div style="width:60px ; height:60px">
 ![](https://github.com/Abhi27122/Campus-Reads/assets/94520177/2c48967e-5fa4-43ea-a28b-e71a17e7c50c)
-![](https://github.com/Abhi27122/Campus-Reads/assets/94520177/784bbc01-ba3b-4299-b648-16350bfbba2b)
-![](https://github.com/Abhi27122/Campus-Reads/assets/94520177/31df470c-769b-4a07-b5bf-186b6ed80fb6)
-![](https://github.com/Abhi27122/Campus-Reads/assets/94520177/63889aa7-ca95-4c52-a524-ebc69cabf673)
-![](https://github.com/Abhi27122/Campus-Reads/assets/94520177/44fe40f1-b110-4b59-8b7e-9103bb36be12)
 </div>
 
