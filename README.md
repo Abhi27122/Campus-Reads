@@ -10,7 +10,6 @@ Overall, the Android app for buying and selling books inside a college is an eff
 
 
 
-<div style="width:60px ; height:60px">
-![](https://github.com/Abhi27122/Campus-Reads/assets/94520177/2c48967e-5fa4-43ea-a28b-e71a17e7c50c)
-</div>
+![](https://github.com/Abhi27122/Campus-Reads/assets/94520177/2c48967e-5fa4-43ea-a28b-e71a17e7c50c){ width=50% }
+
 
