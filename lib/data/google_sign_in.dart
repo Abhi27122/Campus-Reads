@@ -16,7 +16,7 @@ class AuthService{
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
-          if (snapshot.hasData ) {
+          if (snapshot.hasData) {
             return FrontPage();
           } else {
             return Login();
@@ -55,9 +55,11 @@ class AuthService{
 
   Future<bool> checkIfDocExists() async {
   try {
-    var collectionRef = FirebaseFirestore.instance.collection('personal_info');
-    var doc = await collectionRef.doc(user!.uid).get();
-    
+    //print(user!.uid);
+    var collection = FirebaseFirestore.instance.collection('personal_info');
+    var doc = await collection.doc(user!.uid).get();
+
+    print(doc.exists);
     return doc.exists;
     
   } catch (e) {

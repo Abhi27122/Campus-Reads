@@ -3,6 +3,7 @@ import 'package:campusreads/Drawer/myprofile.dart';
 import 'package:campusreads/Drawer/setting.dart';
 import 'package:campusreads/Front/addpost.dart';
 import 'package:campusreads/Front/buybooks.dart';
+import 'package:campusreads/Front/search.dart';
 import 'package:campusreads/data/google_sign_in.dart';
 import 'package:campusreads/data/selling_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,7 +24,11 @@ class FrontPage extends StatelessWidget {
       backgroundColor: Color.fromARGB(255, 227, 218, 167),
       appBar: AppBar(title: Text("Welcome"), backgroundColor: Color.fromARGB(255, 146, 81, 16),
       actions: [
-        IconButton(onPressed: (() => AuthService().signOut()) , icon: Icon(Icons.exit_to_app))
+        IconButton(onPressed: (){
+           Navigator.of(context).push(MaterialPageRoute(builder: ((context) =>  BookSearchScreen())));
+        }, icon:Icon(Icons.search)),
+        IconButton(onPressed: (() => AuthService().signOut()) , icon: Icon(Icons.exit_to_app)),
+        
       ],
       ),
       drawer: DrawerWidget(),
@@ -106,6 +111,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         }
         print(user!.uid);
         var userDocument = snapshot.data as DocumentSnapshot;
+
+        if(userDocument == null){
+          return Center(child:CircularProgressIndicator());
+        }
         return  Drawer(
         backgroundColor: Color.fromARGB(255, 227, 218, 167),
         child: ListView(

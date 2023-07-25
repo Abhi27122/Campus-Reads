@@ -131,8 +131,8 @@ class Login extends StatelessWidget {
                                   
                                   await AuthService().signInWithGoogle();
                                   final FirebaseAuth auth = FirebaseAuth.instance;
-                                  if(await AuthService().checkIfDocExists() == false){
-                                    User? user = FirebaseAuth.instance.currentUser;
+                                  if(!await AuthService().checkIfDocExists()){
+                                    
                                     Navigator.of(context).push(MaterialPageRoute(builder: ((context) => AddUser())));
                                   }
                                   
