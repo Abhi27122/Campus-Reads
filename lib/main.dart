@@ -123,11 +123,12 @@ class Login extends StatelessWidget {
                                       CollectionReference collref = FirebaseFirestore.instance.collection("personal_info");
                     
                                       await collref.doc(user!.uid).set(userdata);
-                                  }
+                                  } 
                                 },
                               )),
                           TextButton(
                             onPressed: () async{
+                                  
                                   await AuthService().signInWithGoogle();
                                   final FirebaseAuth auth = FirebaseAuth.instance;
                                   if(await AuthService().checkIfDocExists() == false){

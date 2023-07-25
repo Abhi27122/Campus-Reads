@@ -12,11 +12,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthService{
   User? user = FirebaseAuth.instance.currentUser;
 
-  handleAuthState() {
+  handleAuthState(){
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData ) {
             return FrontPage();
           } else {
             return Login();
@@ -57,9 +57,12 @@ class AuthService{
   try {
     var collectionRef = FirebaseFirestore.instance.collection('personal_info');
     var doc = await collectionRef.doc(user!.uid).get();
+    
     return doc.exists;
+    
   } catch (e) {
     throw e;
+    
   }
 }
  
